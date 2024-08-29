@@ -1,0 +1,33 @@
+
+pipeline{
+    agent any
+    stages{
+        stage("stage1 : git checkout"){
+          steps{
+            echo 'git process started'
+            git url: "https://github.com/snehasing20/addressbook-cicd-project.git"
+            echo 'git process done'
+          }
+        }
+        stage("stage 2 :compile the code"){
+            steps{
+                sh "mvn compile"
+            }
+        }
+        stage("stage 3: run the test cases"){
+            steps{
+                sh "mvn test"
+            }
+        }
+        stage("stage4: package"){
+            steps{
+                sh "mvn package"
+            }
+        }
+        stage("deploy the project"){
+         steps{
+              sh "sudo cp /opt/l3/workspace/l3asg/target/addressbook.war /home/ubuntu/apache-tomcat-9.0.93/webapps"
+         }
+        }
+    }
+}
